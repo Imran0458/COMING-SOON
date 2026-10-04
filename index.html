@@ -1,0 +1,2085 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Next Stop — Coming Soon</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* =====================================================
+       RESET
+    ===================================================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+
+      font-family: "DM Sans", sans-serif;
+
+      background:
+        linear-gradient(
+          180deg,
+          #9edcf7 0%,
+          #d9f4ff 48%,
+          #f3ead0 100%
+        );
+
+      color: #173329;
+
+      transition:
+        background 1s ease,
+        color 1s ease;
+    }
+
+    /* =====================================================
+       NIGHT MODE
+    ===================================================== */
+
+    body.night {
+      background:
+        linear-gradient(
+          180deg,
+          #071525 0%,
+          #0d2639 45%,
+          #102f3b 100%
+        );
+
+      color: #f8fafc;
+    }
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
+    .page {
+      position: relative;
+
+      width: 100%;
+      height: 100vh;
+
+      overflow: hidden;
+
+      isolation: isolate;
+    }
+
+    /* =====================================================
+       SUN
+    ===================================================== */
+
+    .sun {
+      position: absolute;
+
+      top: 8%;
+      right: 9%;
+
+      width: 115px;
+      height: 115px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #fff7a8 0%,
+          #ffd84d 45%,
+          #ffb300 100%
+        );
+
+      box-shadow:
+        0 0 40px rgba(255, 207, 64, 0.45),
+        0 0 100px rgba(255, 196, 50, 0.25);
+
+      cursor: pointer;
+
+      z-index: 90;
+
+      transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+    }
+
+    .sun:hover {
+      transform: scale(1.08);
+    }
+
+    body.night .sun {
+      opacity: 0;
+      transform: scale(0.4);
+      pointer-events: none;
+    }
+
+    /* =====================================================
+       MOON
+    ===================================================== */
+
+    .moon {
+      position: absolute;
+
+      top: 8%;
+      right: 9%;
+
+      width: 95px;
+      height: 95px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #ffffff 0%,
+          #e2e8f0 55%,
+          #94a3b8 100%
+        );
+
+      box-shadow:
+        0 0 35px rgba(255, 255, 255, 0.35);
+
+      cursor: pointer;
+
+      opacity: 0;
+
+      transform: scale(0.4);
+
+      pointer-events: none;
+
+      z-index: 90;
+
+      transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+    }
+
+    .moon::before {
+      content: "";
+
+      position: absolute;
+
+      width: 16px;
+      height: 16px;
+
+      left: 22px;
+      top: 24px;
+
+      border-radius: 50%;
+
+      background: #cbd5e1;
+
+      box-shadow:
+        28px 8px 0 #cbd5e1,
+        15px 35px 0 #cbd5e1;
+    }
+
+    body.night .moon {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .theme-label {
+      position: absolute;
+
+      top: 87px;
+      right: 130px;
+
+      z-index: 90;
+
+      padding: 5px 3px;
+
+      border-radius: 999px;
+
+      background: rgba(255, 255, 255, 0.35);
+
+      backdrop-filter: blur(10px);
+
+      color: #173329;
+
+      font-size: 11px;
+      font-weight: 700;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+
+      transition: all 0.8s ease;
+    }
+
+    body.night .theme-label {
+      background: rgba(15, 23, 42, 0.55);
+      color: #e2e8f0;
+    }
+
+    /* =====================================================
+       STARS
+    ===================================================== */
+
+    .stars {
+      position: absolute;
+
+      inset: 0;
+
+      z-index: 1;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition: opacity 1s ease;
+    }
+
+    body.night .stars {
+      opacity: 1;
+    }
+
+    .star {
+      position: absolute;
+
+      color: #ffffff;
+
+      font-size: 13px;
+
+      animation:
+        twinkle
+        3s
+        ease-in-out
+        infinite;
+    }
+
+    .star:nth-child(1) {
+      left: 7%;
+      top: 17%;
+    }
+
+    .star:nth-child(2) {
+      left: 17%;
+      top: 30%;
+      animation-delay: 0.5s;
+    }
+
+    .star:nth-child(3) {
+      left: 29%;
+      top: 12%;
+      animation-delay: 1s;
+    }
+
+    .star:nth-child(4) {
+      left: 44%;
+      top: 23%;
+      animation-delay: 1.4s;
+    }
+
+    .star:nth-child(5) {
+      left: 58%;
+      top: 12%;
+      animation-delay: 0.7s;
+    }
+
+    .star:nth-child(6) {
+      left: 71%;
+      top: 27%;
+      animation-delay: 1.8s;
+    }
+
+    .star:nth-child(7) {
+      left: 83%;
+      top: 16%;
+      animation-delay: 0.3s;
+    }
+
+    .star:nth-child(8) {
+      left: 93%;
+      top: 35%;
+      animation-delay: 1.2s;
+    }
+
+    .star:nth-child(9) {
+      left: 12%;
+      top: 48%;
+      animation-delay: 0.9s;
+    }
+
+    .star:nth-child(10) {
+      left: 87%;
+      top: 50%;
+      animation-delay: 1.5s;
+    }
+
+    @keyframes twinkle {
+      0%,
+      100% {
+        opacity: 0.25;
+        transform: scale(0.7);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.4);
+      }
+    }
+
+    /* =====================================================
+       CLOUDS
+    ===================================================== */
+
+    .cloud {
+      position: absolute;
+
+      width: 145px;
+      height: 42px;
+
+      background: rgba(255, 255, 255, 0.78);
+
+      border-radius: 50px;
+
+      filter: blur(0.2px);
+
+      animation:
+        cloudMove
+        32s
+        linear
+        infinite;
+
+      z-index: 2;
+
+      transition: opacity 0.8s ease;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: "";
+
+      position: absolute;
+
+      background: inherit;
+
+      border-radius: 50%;
+    }
+
+    .cloud::before {
+      width: 58px;
+      height: 58px;
+
+      left: 25px;
+      bottom: 14px;
+    }
+
+    .cloud::after {
+      width: 70px;
+      height: 70px;
+
+      right: 18px;
+      bottom: 8px;
+    }
+
+    .cloud-one {
+      left: -200px;
+      top: 18%;
+    }
+
+    .cloud-two {
+      left: -400px;
+      top: 31%;
+
+      transform: scale(0.7);
+
+      animation-delay: 12s;
+    }
+
+    body.night .cloud {
+      opacity: 0.08;
+    }
+
+    @keyframes cloudMove {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform:
+          translateX(
+            calc(100vw + 500px)
+          );
+      }
+    }
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+
+    .hero {
+      position: absolute;
+
+      z-index: 30;
+
+      top: 8%;
+
+      left: 50%;
+
+      transform:
+        translateX(-50%);
+
+      width: min(900px, 90%);
+
+      text-align: center;
+    }
+
+    /* =====================================================
+       SMALL BRAND
+    ===================================================== */
+
+    .brand {
+      display: inline-flex;
+
+      align-items: center;
+      gap: 9px;
+
+      margin-bottom: 20px;
+
+      padding: 9px 16px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.55);
+
+      border-radius: 999px;
+
+      background:
+        rgba(255, 255, 255, 0.35);
+
+      backdrop-filter: blur(14px);
+
+      color: #174333;
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: 2px;
+
+      text-transform: uppercase;
+
+      box-shadow:
+        0 12px 30px
+        rgba(21, 78, 60, 0.08);
+
+      transition: all 0.8s ease;
+    }
+
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+
+      background: #ef8b32;
+
+      box-shadow:
+        0 0 12px
+        rgba(239, 139, 50, 0.6);
+
+      animation:
+        pulse
+        2s
+        ease-in-out
+        infinite;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(0.8);
+        opacity: 0.65;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+
+    body.night .brand {
+      color: #dbeafe;
+
+      background:
+        rgba(15, 23, 42, 0.45);
+
+      border-color:
+        rgba(255, 255, 255, 0.12);
+    }
+
+    /* =====================================================
+       MAIN TITLE
+    ===================================================== */
+
+    .eyebrow {
+      color: #ffffff;
+
+      font-size: clamp(
+        14px,
+        1.5vw,
+        19px
+      );
+
+      font-weight: 700;
+
+      letter-spacing: 6px;
+
+      text-transform: uppercase;
+
+      text-shadow:
+        0 3px 18px
+        rgba(0, 0, 0, 0.12);
+
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+
+      font-size: clamp(
+        58px,
+        10vw,
+        128px
+      );
+
+      line-height: 0.9;
+
+      font-weight: 800;
+
+      letter-spacing: -5px;
+
+      color: #183c2b;
+
+      text-shadow:
+        0 8px 35px
+        rgba(255, 255, 255, 0.35);
+
+      margin-bottom: 18px;
+    }
+
+    body.night .hero h1 {
+      color: #f8fafc;
+
+      text-shadow:
+        0 8px 35px
+        rgba(0, 0, 0, 0.4);
+    }
+
+    .hero h1 span {
+      color: #c56b27;
+    }
+
+    .subtitle {
+      max-width: 570px;
+
+      margin: 0 auto;
+
+      color: rgba(23, 51, 41, 0.78);
+
+      font-size: 16px;
+
+      line-height: 1.7;
+
+      transition: color 0.8s ease;
+    }
+
+    body.night .subtitle {
+      color: #cbd5e1;
+    }
+
+    /* =====================================================
+       COUNTDOWN
+    ===================================================== */
+
+    .countdown {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      margin-top: 25px;
+    }
+
+    .time-box {
+      min-width: 75px;
+
+      padding: 10px 12px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.55);
+
+      border-radius: 16px;
+
+      background:
+        rgba(255, 255, 255, 0.38);
+
+      backdrop-filter: blur(12px);
+
+      box-shadow:
+        0 10px 30px
+        rgba(30, 75, 54, 0.08);
+
+      transition: all 0.8s ease;
+    }
+
+    .time-number {
+      display: block;
+
+      color: #173329;
+
+      font-size: 25px;
+
+      font-weight: 800;
+
+      line-height: 1;
+    }
+
+    .time-label {
+      display: block;
+
+      margin-top: 5px;
+
+      color: #507064;
+
+      font-size: 9px;
+
+      font-weight: 700;
+
+      letter-spacing: 1.5px;
+
+      text-transform: uppercase;
+    }
+
+    body.night .time-box {
+      background:
+        rgba(15, 23, 42, 0.48);
+
+      border-color:
+        rgba(255, 255, 255, 0.1);
+    }
+
+    body.night .time-number {
+      color: #f8fafc;
+    }
+
+    body.night .time-label {
+      color: #94a3b8;
+    }
+
+    /* =====================================================
+       MOUNTAINS
+    ===================================================== */
+
+    .mountains {
+      position: absolute;
+
+      left: 0;
+      bottom: 23%;
+
+      width: 100%;
+      height: 260px;
+
+      z-index: 4;
+
+      pointer-events: none;
+    }
+
+    .mountain {
+      position: absolute;
+
+      bottom: 0;
+
+      width: 0;
+      height: 0;
+
+      border-left: 210px solid transparent;
+      border-right: 210px solid transparent;
+
+      border-bottom:
+        255px solid #4e9852;
+
+      transition:
+        border-bottom-color 1s ease;
+    }
+
+    .mountain::before {
+      content: "";
+
+      position: absolute;
+
+      left: -48px;
+      top: 68px;
+
+      width: 0;
+      height: 0;
+
+      border-left: 48px solid transparent;
+      border-right: 48px solid transparent;
+
+      border-bottom:
+        70px solid #83bb68;
+    }
+
+    .mountain-one {
+      left: -120px;
+
+      transform: scale(1.05);
+
+      border-bottom-color: #6db466;
+    }
+
+    .mountain-two {
+      left: 16%;
+
+      transform: scale(0.85);
+
+      border-bottom-color: #3d8247;
+    }
+
+    .mountain-three {
+      right: 9%;
+
+      transform: scale(0.95);
+
+      border-bottom-color: #559c55;
+    }
+
+    .mountain-four {
+      right: -140px;
+
+      transform: scale(0.8);
+
+      border-bottom-color: #326f3c;
+    }
+
+    body.night .mountain-one {
+      border-bottom-color: #255532;
+    }
+
+    body.night .mountain-two {
+      border-bottom-color: #173d25;
+    }
+
+    body.night .mountain-three {
+      border-bottom-color: #214b2c;
+    }
+
+    body.night .mountain-four {
+      border-bottom-color: #12331e;
+    }
+
+    body.night .mountain::before {
+      border-bottom-color: #32633b;
+    }
+
+    /* =====================================================
+       SEA
+    ===================================================== */
+
+    .sea {
+      position: absolute;
+
+      left: 0;
+      bottom: 12%;
+
+      width: 100%;
+      height: 185px;
+
+      z-index: 7;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          180deg,
+          #32b5dc 0%,
+          #087eb3 55%,
+          #07577e 100%
+        );
+
+      box-shadow:
+        0 -15px 35px
+        rgba(0, 115, 160, 0.12);
+
+      transition:
+        background 1s ease;
+    }
+
+    body.night .sea {
+      background:
+        linear-gradient(
+          180deg,
+          #16536b 0%,
+          #0b3449 55%,
+          #062536 100%
+        );
+    }
+
+    /* =====================================================
+       WAVES
+    ===================================================== */
+
+    .wave {
+      position: absolute;
+
+      width: 220%;
+
+      height: 35px;
+
+      left: -40px;
+
+      border-top:
+        4px solid
+        rgba(255, 255, 255, 0.45);
+
+      border-radius: 50%;
+
+      animation:
+        waveMove
+        7s
+        linear
+        infinite;
+    }
+
+    .wave-one {
+      top: 25px;
+    }
+
+    .wave-two {
+      top: 80px;
+
+      opacity: 0.55;
+
+      animation-duration: 9s;
+    }
+
+    .wave-three {
+      top: 135px;
+
+      opacity: 0.3;
+
+      animation-duration: 11s;
+    }
+
+    @keyframes waveMove {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-180px);
+      }
+    }
+
+    /* =====================================================
+       CLASSIC BOATS
+    ===================================================== */
+
+    .boat {
+      position: absolute;
+
+      z-index: 15;
+
+      bottom: 38px;
+
+      width: 135px;
+      height: 105px;
+
+      animation:
+        boatFloat
+        4s
+        ease-in-out
+        infinite;
+    }
+
+    .boat-one {
+      left: 10%;
+
+      transform: scale(0.9);
+    }
+
+    .boat-two {
+      right: 14%;
+
+      transform: scale(0.7);
+
+      animation-delay: 1.2s;
+    }
+
+    .boat-three {
+      left: 50%;
+
+      transform: scale(0.5);
+
+      animation-delay: 2s;
+    }
+
+    .boat-body {
+      position: absolute;
+
+      left: 5px;
+      bottom: 0;
+
+      width: 125px;
+      height: 36px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #b96a2d,
+          #713b17
+        );
+
+      border:
+        3px solid #42210c;
+
+      border-radius:
+        4px 4px 55px 55px;
+
+      box-shadow:
+        inset 0 -7px 0
+        rgba(0, 0, 0, 0.16);
+    }
+
+    .boat-body::before {
+      content: "";
+
+      position: absolute;
+
+      left: 10px;
+      right: 10px;
+      top: 10px;
+
+      height: 4px;
+
+      border-radius: 10px;
+
+      background: #e2a35b;
+    }
+
+    .boat-top {
+      position: absolute;
+
+      left: 38px;
+      bottom: 30px;
+
+      width: 54px;
+      height: 27px;
+
+      background: #f5e7c9;
+
+      border:
+        3px solid #4a2a12;
+
+      border-radius:
+        6px 6px 2px 2px;
+    }
+
+    .boat-top::before {
+      content: "";
+
+      position: absolute;
+
+      width: 12px;
+      height: 10px;
+
+      left: 8px;
+      top: 6px;
+
+      background: #4ea6c0;
+
+      border:
+        2px solid #294b59;
+
+      box-shadow:
+        22px 0 0 #4ea6c0;
+    }
+
+    .boat-roof {
+      position: absolute;
+
+      left: 68px;
+      bottom: 29px;
+
+      width: 5px;
+      height: 70px;
+
+      border-radius: 4px;
+
+      background: #573015;
+
+      z-index: 5;
+    }
+
+    .boat-roof::before {
+      content: "";
+
+      position: absolute;
+
+      left: 5px;
+      top: 4px;
+
+      width: 0;
+      height: 0;
+
+      border-top: 28px solid transparent;
+      border-bottom: 28px solid transparent;
+      border-left: 48px solid #fff5dd;
+    }
+
+    .boat-roof::after {
+      content: "";
+
+      position: absolute;
+
+      right: 5px;
+      top: 31px;
+
+      width: 0;
+      height: 0;
+
+      border-top: 17px solid transparent;
+      border-bottom: 17px solid transparent;
+      border-right: 32px solid #f2ddb7;
+    }
+
+    .boat-flag {
+      position: absolute;
+
+      left: 69px;
+      bottom: 96px;
+
+      width: 3px;
+      height: 15px;
+
+      background: #4b2a12;
+
+      z-index: 6;
+    }
+
+    .boat-flag::after {
+      content: "";
+
+      position: absolute;
+
+      left: 3px;
+      top: 0;
+
+      width: 18px;
+      height: 10px;
+
+      background: #b73b2f;
+
+      clip-path:
+        polygon(
+          0 0,
+          100% 50%,
+          0 100%
+        );
+    }
+
+    @keyframes boatFloat {
+      0%,
+      100% {
+        transform:
+          translateY(0)
+          rotate(0deg);
+      }
+
+      50% {
+        transform:
+          translateY(-8px)
+          rotate(1deg);
+      }
+    }
+
+    /* =====================================================
+       GROUND
+    ===================================================== */
+
+    .ground {
+      position: absolute;
+
+      left: 0;
+      bottom: 0;
+
+      width: 100%;
+      height: 15%;
+
+      z-index: 9;
+
+      background:
+        linear-gradient(
+          180deg,
+          #79ad58,
+          #477b3e
+        );
+
+      transition:
+        background 1s ease;
+    }
+
+    body.night .ground {
+      background:
+        linear-gradient(
+          180deg,
+          #21482b,
+          #122c1b
+        );
+    }
+
+    /* =====================================================
+       TRAIN
+    ===================================================== */
+
+    .train-wrapper {
+      position: absolute;
+
+      z-index: 40;
+
+      bottom: 3%;
+
+      left: -470px;
+
+      width: 440px;
+
+      animation:
+        trainMove
+        16s
+        linear
+        infinite;
+    }
+
+    .train-container {
+      position: relative;
+
+      width: 440px;
+      height: 210px;
+    }
+
+    .toy-train {
+      position: absolute;
+
+      left: 0;
+      bottom: 0;
+
+      width: 440px;
+      height: auto;
+
+      display: block;
+
+      object-fit: contain;
+
+      user-select: none;
+      pointer-events: none;
+
+      mix-blend-mode: multiply;
+
+      filter:
+        drop-shadow(
+          0 14px 10px
+          rgba(0, 0, 0, 0.2)
+        );
+    }
+
+    @keyframes trainMove {
+      0% {
+        left: -470px;
+      }
+
+      100% {
+        left:
+          calc(100% + 470px);
+      }
+    }
+
+    /* =====================================================
+       SMOKE MESSAGE
+    ===================================================== */
+
+    .smoke {
+      position: absolute;
+
+      left: 315px;
+      top: -25px;
+
+      z-index: 50;
+
+      width: 145px;
+      min-height: 92px;
+
+      padding: 15px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #ffffff 0%,
+          #f7fafc 55%,
+          #d7e1e8 100%
+        );
+
+      color: #173329;
+
+      font-size: 12px;
+
+      font-weight: 900;
+
+      line-height: 1.1;
+
+      letter-spacing: 1px;
+
+      box-shadow:
+        0 12px 25px
+        rgba(0, 0, 0, 0.12);
+
+      animation:
+        smokeMain
+        3s
+        ease-in-out
+        infinite;
+    }
+
+    .smoke::before,
+    .smoke::after {
+      content: "";
+
+      position: absolute;
+
+      border-radius: 50%;
+
+      background: #f7fafc;
+
+      z-index: -1;
+    }
+
+    .smoke::before {
+      width: 55px;
+      height: 55px;
+
+      left: -18px;
+      bottom: 5px;
+    }
+
+    .smoke::after {
+      width: 65px;
+      height: 65px;
+
+      right: -18px;
+      top: -10px;
+    }
+
+    .smoke-two,
+    .smoke-three {
+      width: 30px;
+      height: 30px;
+
+      min-height: 0;
+
+      padding: 0;
+
+      font-size: 0;
+
+      background: #f7fafc;
+
+      box-shadow:
+        0 5px 12px
+        rgba(0, 0, 0, 0.08);
+
+      animation:
+        smokePuff
+        3.2s
+        ease-out
+        infinite;
+    }
+
+    .smoke-two {
+      left: 345px;
+      top: -20px;
+
+      animation-delay: 0.8s;
+    }
+
+    .smoke-three {
+      left: 375px;
+      top: -5px;
+
+      animation-delay: 1.5s;
+    }
+
+    @keyframes smokeMain {
+      0%,
+      100% {
+        opacity: 0.85;
+
+        transform:
+          translateY(0)
+          scale(0.94);
+      }
+
+      50% {
+        opacity: 1;
+
+        transform:
+          translateY(-10px)
+          scale(1.04);
+      }
+    }
+
+    @keyframes smokePuff {
+      0% {
+        opacity: 0;
+
+        transform:
+          translate(0, 10px)
+          scale(0.3);
+      }
+
+      25% {
+        opacity: 0.8;
+      }
+
+      100% {
+        opacity: 0;
+
+        transform:
+          translate(-30px, -85px)
+          scale(1.5);
+      }
+    }
+
+    /* =====================================================
+       FOOTER / STATUS
+    ===================================================== */
+
+    .status {
+      position: absolute;
+
+      z-index: 60;
+
+      left: 50%;
+      bottom: 22px;
+
+      transform: translateX(-50%);
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 9px 15px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.3);
+
+      border-radius: 999px;
+
+      background:
+        rgba(255, 255, 255, 0.22);
+
+      backdrop-filter: blur(12px);
+
+      color: #ffffff;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 1.5px;
+
+      text-transform: uppercase;
+
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #a7f3d0;
+
+      box-shadow:
+        0 0 10px #a7f3d0;
+
+      animation:
+        pulse
+        1.8s
+        infinite;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 700px) {
+
+      .sun {
+        width: 78px;
+        height: 78px;
+
+        top: 8%;
+        right: 7%;
+      }
+
+      .moon {
+        width: 68px;
+        height: 68px;
+
+        top: 8%;
+        right: 7%;
+      }
+
+      .theme-label {
+        top: 20px;
+        right: 100px;
+
+        font-size: 8px;
+      }
+
+      .hero {
+        top: 8%;
+
+        width: 92%;
+      }
+
+      .brand {
+        padding: 7px 12px;
+
+        font-size: 8px;
+
+        letter-spacing: 1.3px;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+
+        letter-spacing: 3px;
+      }
+
+      .hero h1 {
+        font-size: 60px;
+
+        letter-spacing: -3px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+
+        line-height: 1.55;
+
+        max-width: 330px;
+      }
+
+      .countdown {
+        gap: 5px;
+
+        margin-top: 18px;
+      }
+
+      .time-box {
+        min-width: 60px;
+
+        padding: 8px 7px;
+
+        border-radius: 12px;
+      }
+
+      .time-number {
+        font-size: 18px;
+      }
+
+      .time-label {
+        font-size: 7px;
+
+        letter-spacing: 1px;
+      }
+
+      .mountains {
+        bottom: 22%;
+
+        height: 180px;
+      }
+
+      .mountain {
+        border-left-width: 140px;
+        border-right-width: 140px;
+
+        border-bottom-width: 175px;
+      }
+
+      .sea {
+        bottom: 13%;
+
+        height: 145px;
+      }
+
+      .boat {
+        transform: scale(0.6);
+      }
+
+      .boat-one {
+        left: 1%;
+      }
+
+      .boat-two {
+        right: 2%;
+      }
+
+      .boat-three {
+        display: none;
+      }
+
+      .ground {
+        height: 14%;
+      }
+
+      .train-wrapper {
+        width: 300px;
+
+        bottom: 2%;
+
+        left: -330px;
+      }
+
+      .train-container {
+        width: 300px;
+        height: 150px;
+      }
+
+      .toy-train {
+        width: 300px;
+      }
+
+      .smoke {
+        left: 210px;
+        top: -15px;
+
+        width: 105px;
+        min-height: 68px;
+
+        font-size: 9px;
+
+        padding: 10px;
+      }
+
+      .smoke-two {
+        left: 235px;
+      }
+
+      .smoke-three {
+        left: 260px;
+      }
+
+      @keyframes trainMove {
+        0% {
+          left: -330px;
+        }
+
+        100% {
+          left:
+            calc(100% + 330px);
+        }
+      }
+
+      .status {
+        bottom: 8px;
+
+        font-size: 7px;
+
+        letter-spacing: 1px;
+      }
+    }
+
+    @media (max-width: 400px) {
+
+      .hero h1 {
+        font-size: 49px;
+      }
+
+      .subtitle {
+        font-size: 12px;
+      }
+
+      .time-box {
+        min-width: 52px;
+      }
+
+      .time-number {
+        font-size: 16px;
+      }
+
+      .train-wrapper {
+        width: 250px;
+      }
+
+      .train-container {
+        width: 250px;
+        height: 125px;
+      }
+
+      .toy-train {
+        width: 250px;
+      }
+
+      .smoke {
+        left: 175px;
+
+        width: 88px;
+        min-height: 58px;
+
+        font-size: 7px;
+      }
+
+      .smoke-two {
+        left: 195px;
+      }
+
+      .smoke-three {
+        left: 220px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <!-- =================================================
+         STARS
+    ================================================== -->
+
+    <div class="stars">
+      <span class="star">✦</span>
+      <span class="star">✧</span>
+      <span class="star">★</span>
+      <span class="star">✦</span>
+      <span class="star">✧</span>
+      <span class="star">★</span>
+      <span class="star">✦</span>
+      <span class="star">✧</span>
+      <span class="star">★</span>
+      <span class="star">✦</span>
+    </div>
+
+    <!-- =================================================
+         SUN / MOON
+    ================================================== -->
+
+    <div
+      class="sun"
+      id="sun"
+      title="Switch to night"
+      aria-label="Switch to night"
+    ></div>
+
+    <div
+      class="moon"
+      id="moon"
+      title="Switch to day"
+      aria-label="Switch to day"
+    ></div>
+
+    <div class="theme-label" id="themeLabel">
+      Day mode
+    </div>
+
+    <!-- =================================================
+         CLOUDS
+    ================================================== -->
+
+    <div class="cloud cloud-one"></div>
+    <div class="cloud cloud-two"></div>
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
+
+    <section class="hero">
+
+      <div class="brand">
+        <span class="brand-dot"></span>
+        New journey loading
+      </div>
+
+      <div class="eyebrow">
+        Your next destination
+      </div>
+
+      <h1>
+        Next <span>Stop</span>
+      </h1>
+
+      <p class="subtitle">
+        A new experience is getting ready to depart.
+        Pack your curiosity, follow the horizon,
+        and get ready for something unforgettable.
+      </p>
+
+      <!-- COUNTDOWN -->
+
+      <div class="countdown">
+
+        <div class="time-box">
+          <span
+            class="time-number"
+            id="days"
+          >00</span>
+
+          <span class="time-label">
+            Days
+          </span>
+        </div>
+
+        <div class="time-box">
+          <span
+            class="time-number"
+            id="hours"
+          >00</span>
+
+          <span class="time-label">
+            Hours
+          </span>
+        </div>
+
+        <div class="time-box">
+          <span
+            class="time-number"
+            id="minutes"
+          >00</span>
+
+          <span class="time-label">
+            Minutes
+          </span>
+        </div>
+
+        <div class="time-box">
+          <span
+            class="time-number"
+            id="seconds"
+          >00</span>
+
+          <span class="time-label">
+            Seconds
+          </span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =================================================
+         MOUNTAINS
+    ================================================== -->
+
+    <div class="mountains">
+
+      <div class="mountain mountain-one"></div>
+      <div class="mountain mountain-two"></div>
+      <div class="mountain mountain-three"></div>
+      <div class="mountain mountain-four"></div>
+
+    </div>
+
+    <!-- =================================================
+         SEA
+    ================================================== -->
+
+    <div class="sea">
+
+      <div class="wave wave-one"></div>
+      <div class="wave wave-two"></div>
+      <div class="wave wave-three"></div>
+
+      <!-- CLASSIC BOAT 1 -->
+
+      <div class="boat boat-one">
+
+        <div class="boat-body"></div>
+
+        <div class="boat-top"></div>
+
+        <div class="boat-roof"></div>
+
+        <div class="boat-flag"></div>
+
+      </div>
+
+      <!-- CLASSIC BOAT 2 -->
+
+      <div class="boat boat-two">
+
+        <div class="boat-body"></div>
+
+        <div class="boat-top"></div>
+
+        <div class="boat-roof"></div>
+
+        <div class="boat-flag"></div>
+
+      </div>
+
+      <!-- CLASSIC BOAT 3 -->
+
+      <div class="boat boat-three">
+
+        <div class="boat-body"></div>
+
+        <div class="boat-top"></div>
+
+        <div class="boat-roof"></div>
+
+        <div class="boat-flag"></div>
+
+      </div>
+
+    </div>
+
+    <!-- =================================================
+         GROUND
+    ================================================== -->
+
+    <div class="ground"></div>
+
+    <!-- =================================================
+         MOVING TRAIN
+    ================================================== -->
+
+    <div class="train-wrapper">
+
+      <div class="train-container">
+
+        <img
+          src="bg-train.png"
+          alt="Toy Cartoon Train"
+          class="toy-train"
+        />
+
+        <!-- MAIN SMOKE -->
+
+        <div class="smoke">
+          NEXT<br>
+          STOP
+        </div>
+
+        <!-- EXTRA SMOKE -->
+
+        <div class="smoke smoke-two"></div>
+
+        <div class="smoke smoke-three"></div>
+
+      </div>
+
+    </div>
+
+    <!-- =================================================
+         STATUS
+    ================================================== -->
+
+    <div class="status">
+
+      <span class="status-dot"></span>
+
+      Destination loading...
+
+    </div>
+
+  </main>
+
+
+  <!-- =================================================
+       JAVASCRIPT
+  ================================================== -->
+
+  <script>
+
+    /* =================================================
+       DAY / NIGHT
+    ================================================= */
+
+    const sun =
+      document.getElementById("sun");
+
+    const moon =
+      document.getElementById("moon");
+
+    const themeLabel =
+      document.getElementById("themeLabel");
+
+
+    function enableNightMode() {
+
+      document.body.classList.add("night");
+
+      themeLabel.textContent =
+        "Night mode";
+
+    }
+
+
+    function enableDayMode() {
+
+      document.body.classList.remove("night");
+
+      themeLabel.textContent =
+        "Day mode";
+
+    }
+
+
+    sun.addEventListener(
+      "click",
+      enableNightMode
+    );
+
+    moon.addEventListener(
+      "click",
+      enableDayMode
+    );
+
+
+    /* =================================================
+       COUNTDOWN
+       
+       Change this date to your launch date.
+    ================================================= */
+
+    const launchDate =
+      new Date(
+        "October 31, 2026 23:59:59"
+      ).getTime();
+
+
+    function updateCountdown() {
+
+      const now =
+        new Date().getTime();
+
+      const distance =
+        launchDate - now;
+
+
+      if (distance <= 0) {
+
+        document.getElementById("days")
+          .textContent = "00";
+
+        document.getElementById("hours")
+          .textContent = "00";
+
+        document.getElementById("minutes")
+          .textContent = "00";
+
+        document.getElementById("seconds")
+          .textContent = "00";
+
+        return;
+
+      }
+
+
+      const days =
+        Math.floor(
+          distance /
+          (1000 * 60 * 60 * 24)
+        );
+
+
+      const hours =
+        Math.floor(
+          (
+            distance %
+            (1000 * 60 * 60 * 24)
+          ) /
+          (1000 * 60 * 60)
+        );
+
+
+      const minutes =
+        Math.floor(
+          (
+            distance %
+            (1000 * 60 * 60)
+          ) /
+          (1000 * 60)
+        );
+
+
+      const seconds =
+        Math.floor(
+          (
+            distance %
+            (1000 * 60)
+          ) /
+          1000
+        );
+
+
+      document.getElementById("days")
+        .textContent =
+        String(days).padStart(2, "0");
+
+
+      document.getElementById("hours")
+        .textContent =
+        String(hours).padStart(2, "0");
+
+
+      document.getElementById("minutes")
+        .textContent =
+        String(minutes).padStart(2, "0");
+
+
+      document.getElementById("seconds")
+        .textContent =
+        String(seconds).padStart(2, "0");
+
+    }
+
+
+    updateCountdown();
+
+    setInterval(
+      updateCountdown,
+      1000
+    );
+
+  </script>
+
+</body>
+</html>
+```
